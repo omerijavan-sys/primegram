@@ -1,0 +1,49 @@
+PRIMEGRAM QUICK START GUIDE
+==========================
+
+STEP 1: Install Node.js
+-----------------------
+1. The Node.js installer should be downloading now
+2. Run the installer when it finishes
+3. Accept all default settings
+4. Restart your computer after installation
+
+STEP 2: Install Dependencies
+----------------------------
+1. Open Command Prompt or PowerShell
+2. Navigate to the project folder:
+   cd C:\Users\omeri\Downloads\liquid-prime
+3. Install packages:
+   npm install
+
+STEP 3: Start Development Server
+-------------------------------
+1. In the same terminal, run:
+   npm run dev
+2. Wait for it to finish starting
+3. Open your browser to: http://localhost:5173
+
+STEP 4: Test Features
+--------------------
+You'll have access to:
+- Movie Hub (TMDB movies, save to library)
+- Music Hub (YouTube playback, AI recommendations)
+- AI Assistant (press 'P' key)
+- WebRTC Calling (video calls)
+- Stories & Reels (full-screen viewer)
+- Smart Feed (auto-play videos)
+
+IF NODE.JS INSTALLER DIDN'T OPEN:
+--------------------------------
+1. Go to https://nodejs.org
+2. Download the LTS version
+3. Run the installer
+4. Follow steps above
+
+TROUBLESHOOTING:
+---------------
+- If "npm not found": Restart computer after Node.js install
+- If port 5173 busy: Server will use next available port
+- If API errors: Check .env file for Supabase keys
+
+ALL CODE IS 100% COMPLETE - just need to start the server!

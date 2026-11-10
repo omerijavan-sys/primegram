@@ -1,0 +1,55 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Electron toolchain
+        run: npm install --no-save electron @electron/packager
+
+      - name: Build web assets (relative base for file://)
+        run: npx vite build --base=./
+
+      - name: Package Windows app
+        run: npx @electron/packager . "Primegram" --platform=win32 --arch=x64 --out=electron-release --overwrite --ignore="^/src" --ignore="^/public" --ignore="^/android" --ignore="^/electron-release"
+
+      - name: Zip release
+        run: Compress-Archive -Path electron-release/Primegram-win32-x64/* -DestinationPath Primegram-windows.zip
+        shell: pwsh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: primegram-windows
+          path: Primegram-windows.zip
+          retention-days: 30
+
+      - name: Attach to release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Primegram-windows.zip
+          tag_name: v${{ github.run_number }}
+          name: Primegram Build ${{ github.run_number }}
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

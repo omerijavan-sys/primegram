@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://iyyenycwokksfqywmoio.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "primegram-mcp",
+      "version": "0.2.0",
+      "title": "Primegram"
+    },
+    "tools": [
+      {
+        "name": "whoami",
+        "title": "Who am I",
+        "description": "Return the signed-in Primegram user's id, email, and profile.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_posts",
+        "title": "List my posts",
+        "description": "List the signed-in user's Primegram posts, newest first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20,
+              "description": "Max number of posts to return."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_post",
+        "title": "Create post",
+        "description": "Create a new Primegram post as the signed-in user.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "caption": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000,
+              "description": "Post caption text."
+            },
+            "media_url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Optional media URL."
+            },
+            "media_type": {
+              "type": "string",
+              "enum": [
+                "image",
+                "video"
+              ],
+              "description": "Media type if media_url is provided."
+            }
+          },
+          "required": [
+            "caption"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_recent_messages",
+        "title": "List recent messages",
+        "description": "List recent direct messages sent to or from the signed-in user.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "like_post",
+        "title": "Like or unlike a post",
+        "description": "Like a Primegram post as the signed-in user, or remove that like when `unlike` is true. Liking twice is a no-op.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "post_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "ID of the post to like."
+            },
+            "unlike": {
+              "type": "boolean",
+              "description": "Set true to remove the signed-in user's like instead."
+            }
+          },
+          "required": [
+            "post_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "comment_on_post",
+        "title": "Comment on a post",
+        "description": "Add a comment to a Primegram post as the signed-in user.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "post_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "ID of the post to comment on."
+            },
+            "content": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000,
+              "description": "Comment text."
+            }
+          },
+          "required": [
+            "post_id",
+            "content"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_post_comments",
+        "title": "List comments on a post",
+        "description": "List comments on a Primegram post, newest first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "post_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "ID of the post."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30,
+              "description": "Max number of comments to return."
+            }
+          },
+          "required": [
+            "post_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

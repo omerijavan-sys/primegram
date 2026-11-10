@@ -1,0 +1,83 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1792230759075,
+      "tag": "0000_official_admin_new_email",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792299805565,
+      "tag": "0001_restrict_profiles_follows_to_signed_in",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792447066297,
+      "tag": "0002_member_presence_and_call_invitations",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792526283832,
+      "tag": "0003_protect_call_invitation_participants",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793518495888,
+      "tag": "0004_primegram_extreme_monetization",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793602966789,
+      "tag": "0005_scope_boost_tier_reads",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793604382418,
+      "tag": "0006_reel_likes_comments",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793664276618,
+      "tag": "0007_reel_social_block_guests",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793750518960,
+      "tag": "0008_mpesa_topups",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793837298665,
+      "tag": "0009_rls_guest_block_and_tautology_fixes",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793837899024,
+      "tag": "0010_migration",
+      "breakpoints": true
+    }
+  ]
+}

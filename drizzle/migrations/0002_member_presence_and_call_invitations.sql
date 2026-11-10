@@ -1,0 +1,11 @@
+CREATE TABLE public.call_invitations (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), caller_id uuid NOT NULL, receiver_id uuid NOT NULL, audio boolean NOT NULL DEFAULT false, status text NOT NULL DEFAULT 'ringing' CHECK (status IN ('ringing','accepted','declined','ended')), created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, INSERT, UPDATE ON public.call_invitations TO authenticated;
+GRANT ALL ON public.call_invitations TO service_role;
+ALTER TABLE public.call_invitations ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Call participants read invitations" ON public.call_invitations FOR SELECT TO authenticated USING ((auth.uid() = caller_id OR auth.uid() = receiver_id) AND COALESCE((auth.jwt()->>'is_anonymous')::boolean, false) = false);
+CREATE POLICY "Members invite as themselves" ON public.call_invitations FOR INSERT TO authenticated WITH CHECK (auth.uid() = caller_id AND caller_id <> receiver_id AND status = 'ringing' AND COALESCE((auth.jwt()->>'is_anonymous')::boolean, false) = false);
+CREATE POLICY "Participants update invitation" ON public.call_invitations FOR UPDATE TO authenticated USING (auth.uid() = caller_id OR auth.uid() = receiver_id) WITH CHECK (auth.uid() = caller_id OR auth.uid() = receiver_id);
+ALTER PUBLICATION supabase_realtime ADD TABLE public.call_invitations;
+CREATE POLICY "Members read online presence" ON realtime.messages FOR SELECT TO authenticated USING (realtime.topic() = 'primegram-online' AND COALESCE((auth.jwt()->>'is_anonymous')::boolean, false) = false);
+CREATE POLICY "Members share online presence" ON realtime.messages FOR INSERT TO authenticated WITH CHECK (realtime.topic() = 'primegram-online' AND COALESCE((auth.jwt()->>'is_anonymous')::boolean, false) = false);
+ALTER POLICY "Signed-in users can view profiles" ON public.profiles USING (auth.uid() IS NOT NULL AND COALESCE((auth.jwt()->>'is_anonymous')::boolean, false) = false);
